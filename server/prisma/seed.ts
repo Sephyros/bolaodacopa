@@ -7,7 +7,8 @@ async function main() {
     data: {
       name: 'John Doe',
       email: 'johndoejd@gmail.com',
-      avatarUrl: 'https://github.com/diego3g.png'
+      googleId: '',
+      avatarUrl: 'https://github.com/diego3g.png',
     }
   })
   const poll = await prisma.poll.create({

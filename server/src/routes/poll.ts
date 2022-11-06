@@ -6,7 +6,7 @@ import { prisma } from "../lib/prisma"
 export async function pollRoutes(fastify: FastifyInstance) {
   fastify.get('/polls/count', async () => {
     const count = await prisma.poll.count()
-    return { count: count }
+    return { count }
   })
 
   fastify.post('/polls', async (request, reply) => {

@@ -177,6 +177,4 @@ export async function pollRoutes(fastify: FastifyInstance) {
     })
     return { poll }
   })
-
-
 }

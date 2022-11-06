@@ -20,7 +20,7 @@ export function New() {
 
         <Input
           mb={2}
-          placeholder='Qual nome do seu bolão'
+          placeholder='Qual nome do seu bolão?'
         />
 
         <Button title='CRIAR MEU BOLÃO' />

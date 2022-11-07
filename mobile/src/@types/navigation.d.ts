@@ -3,7 +3,7 @@ export declare global {
     interface RootParamList {
       new: undefined;
       polls: undefined;
-      find: undefined,
+      find: undefined;
       details: {
         id: string;
       }

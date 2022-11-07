@@ -105,37 +105,35 @@ export async function pollRoutes(fastify: FastifyInstance) {
 
   fastify.get('/polls', {
     onRequest: [authenticate]
-  }, async (request, reply) => {
+  }, async (request) => {
     const polls = await prisma.poll.findMany({
-      where: {
-        participants: {
-          some: {
-            userId: request.user.sub
-          }
-        }
-      },
       include: {
-        _count: {
+        owner: {
           select: {
-            participants: true
+            name: true,
           }
         },
         participants: {
           select: {
             id: true,
-
             user: {
               select: {
-                avatarUrl: true
+                avatarUrl: true,
               }
             }
           },
           take: 4,
         },
-        owner: {
+        _count: {
           select: {
-            id: true,
-            name: true
+            participants: true,
+          }
+        }
+      },
+      where: {
+        participants: {
+          some: {
+            userId: request.user.sub
           }
         }
       }
@@ -144,44 +142,52 @@ export async function pollRoutes(fastify: FastifyInstance) {
     return { polls }
   })
 
-  fastify.get('/polls/:id', {
+  fastify.get('/polls/:pollId', {
     onRequest: [authenticate]
-  }, async (request) => {
+  }, async (request, reply) => {
     const getPollParams = z.object({
-      id: z.string(),
+      pollId: z.string(),
     })
 
-    const { id } = getPollParams.parse(request.params)
-    const poll = await prisma.poll.findUnique({
-      where: {
-        id,
-      },
+    const { pollId } = getPollParams.parse(request.params)
+    const poll = await prisma.poll.findFirst({
       include: {
-        _count: {
+        owner: {
           select: {
-            participants: true
+            name: true,
           }
         },
         participants: {
           select: {
             id: true,
-
             user: {
               select: {
-                avatarUrl: true
+                avatarUrl: true,
               }
             }
           },
           take: 4,
         },
-        owner: {
+        _count: {
           select: {
-            id: true,
-            name: true
+            participants: true,
+          }
+        }
+      },
+      where: {
+        id: pollId,
+        participants: {
+          some: {
+            userId: request.user.sub
           }
         }
       }
     })
+    if (!poll) {
+      return reply.status(400).send({
+        message: 'Poll not found.'
+      })
+    }
     return { poll }
   })
 }

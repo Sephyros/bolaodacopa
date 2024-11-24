@@ -19,7 +19,7 @@
     "country-list": "^2.2.0",
     "dayjs": "^1.11.6",
     "dotenv": "^16.0.3",
-    "expo": "~46.0.16",
+    "expo": "~52.0.11",
     "expo-auth-session": "~4.0.0",
     "expo-font": "~10.2.0",
     "expo-random": "~12.3.0",
